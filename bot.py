@@ -1,25 +1,58 @@
+import os
+import logging
+import asyncio
 from telegram import Update, InlineKeyboardButton, InlineKeyboardMarkup
 from telegram.ext import Application, CommandHandler, ContextTypes
 
-TOKEN = '8450621176:AAH85tQEuVz9zyXINcYGKgY5VkGxGpMhrNQ'
+# Cấu hình logging
+logging.basicConfig(
+    format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
+    level=logging.INFO
+)
+
+# Lấy token từ biến môi trường
+TOKEN = os.environ.get('BOT_TOKEN')
+
+if not TOKEN:
+    raise ValueError("No BOT_TOKEN found in environment variables!")
+
+async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    await update.message.reply_text(
+        'Chào bạn! Tôi là bot hỗ trợ.\n'
+        'Sử dụng /website để truy cập website.'
+    )
 
 async def website(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    """Hiển thị website với nút bấm"""
-    
-    # Tạo nút bấm
     keyboard = [
-        [InlineKeyboardButton("🌐 Truy cập Website", url='https://huutien.store/')],
+        [InlineKeyboardButton("🌐 Truy cập Website", url='https://huutien.store/')]
     ]
-    
     reply_markup = InlineKeyboardMarkup(keyboard)
     
-    # Gửi tin nhắn với nút bấm
     await update.message.reply_text(
-        '🏠 *Website HuuTien Store*\n\n'
-        'Chào mừng bạn đến với website của chúng tôi!\n'
-        'Nhấn nút bên dưới để truy cập.',
+        '🏠 *HuuTien Store*\n\n'
+        'Nhấn nút bên dưới để truy cập website:',
         parse_mode='Markdown',
         reply_markup=reply_markup
     )
 
-# ... phần còn lại tương tự
+def main():
+    """Khởi chạy bot"""
+    print("🚀 Bot is starting...")
+    
+    # Tạo application
+    application = Application.builder().token(TOKEN).build()
+    
+    # Thêm handlers
+    application.add_handler(CommandHandler('start', start))
+    application.add_handler(CommandHandler('website', website))
+    
+    # Chạy bot (blocking)
+    print("✅ Bot is running! Press Ctrl+C to stop.")
+    application.run_polling(allowed_updates=Update.ALL_TYPES)
+
+if __name__ == '__main__':
+    try:
+        main()
+    except Exception as e:
+        print(f"❌ Error: {e}")
+        exit(1)
