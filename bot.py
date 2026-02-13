@@ -9,7 +9,6 @@ async def website(update: Update, context: ContextTypes.DEFAULT_TYPE):
     # Tạo nút bấm
     keyboard = [
         [InlineKeyboardButton("🌐 Truy cập Website", url='https://huutien.store/')],
-        [InlineKeyboardButton("📞 Liên hệ", url='https://t.me/your_contact')]
     ]
     
     reply_markup = InlineKeyboardMarkup(keyboard)
