@@ -1,7 +1,7 @@
 from telegram import Update, InlineKeyboardButton, InlineKeyboardMarkup
 from telegram.ext import Application, CommandHandler, ContextTypes
 
-TOKEN = 'YOUR_BOT_TOKEN_HERE'
+TOKEN = '8450621176:AAH85tQEuVz9zyXINcYGKgY5VkGxGpMhrNQ'
 
 async def website(update: Update, context: ContextTypes.DEFAULT_TYPE):
     """Hiển thị website với nút bấm"""
